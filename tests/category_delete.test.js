@@ -16,8 +16,7 @@ beforeAll(done => {
     }).then(response => {
       access_token = response.body.access_token
       done()
-    })
-    .catch(err => {
+    }).catch(err => {
       console.log(err)
     })
 })
@@ -38,14 +37,10 @@ beforeAll(done => {
 
 beforeAll(done => {
   request(app)
-    .post('/products')
+    .post('/categories')
     .set({ access_token })
     .send({
-      name: "Sepatu",
-      description: "Sepatu merah celana biru ku tak peduli",
-      image_url: "https://static.shop.adidas.co.id/media/catalog/product/cache/2/thumbnail/1200x/9df78eab33525d08d6e5fb8d27136e95/B/B/BB6166_SL_eCom.jpg",
-      price: 2000000,
-      stock: 10
+      name: "Sepatu"
     })
     .then(response => {
       id = response.body.id
@@ -56,15 +51,15 @@ beforeAll(done => {
     })
 })
 
-describe('Test endpoint DELETE /products', () => {
-  it('Test delete product success', (done) => {
+describe('Test endpoint DELETE /categories', () => {
+  it('Test delete categories success', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .delete(`/categories/${id}`)
       .set({ access_token })
       .then(response => {
         const { body, status } = response
         expect(status).toBe(200)
-        expect(body).toHaveProperty('msg', 'Product has been deleted')
+        expect(body).toHaveProperty('msg', 'Category has been deleted')
         done()
       })
       .catch(err => {
@@ -72,9 +67,9 @@ describe('Test endpoint DELETE /products', () => {
       })
   })
 
-  it('Test delete product no access token', (done) => {
+  it('Test delete categories no access token', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .delete(`/categories/${id}`)
       .then(response => {
         const { body, status } = response
         expect(status).toBe(401)
@@ -86,9 +81,9 @@ describe('Test endpoint DELETE /products', () => {
       })
   })
 
-  it('Test delete product role is not authorized', (done) => {
+  it('Test delete success', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .delete(`/categories/${id}`)
       .set({ access_token: token_customer })
       .then(response => {
         const { body, status } = response

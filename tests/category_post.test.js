@@ -5,7 +5,12 @@ const { queryInterface } = sequelize
 
 let access_token;
 let token_customer;
-let id;
+
+afterAll(done => {
+  queryInterface.bulkDelete("Categories")
+    .then(() => { done() })
+    .catch(err => { done() })
+})
 
 beforeAll(done => {
   request(app)
@@ -16,8 +21,7 @@ beforeAll(done => {
     }).then(response => {
       access_token = response.body.access_token
       done()
-    })
-    .catch(err => {
+    }).catch(err => {
       console.log(err)
     })
 })
@@ -36,35 +40,18 @@ beforeAll(done => {
     })
 })
 
-beforeAll(done => {
-  request(app)
-    .post('/products')
-    .set({ access_token })
-    .send({
-      name: "Sepatu",
-      description: "Sepatu merah celana biru ku tak peduli",
-      image_url: "https://static.shop.adidas.co.id/media/catalog/product/cache/2/thumbnail/1200x/9df78eab33525d08d6e5fb8d27136e95/B/B/BB6166_SL_eCom.jpg",
-      price: 2000000,
-      stock: 10
-    })
-    .then(response => {
-      id = response.body.id
-      done()
-    })
-    .catch(err => {
-      console.log(err)
-    })
-})
-
-describe('Test endpoint DELETE /products', () => {
-  it('Test delete product success', (done) => {
+describe('Test endpoint POST /categories', () => {
+  it('Test create category success', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .post('/categories')
       .set({ access_token })
+      .send({
+        name: "Sepatu"
+      })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe(200)
-        expect(body).toHaveProperty('msg', 'Product has been deleted')
+        expect(status).toBe(201)
+        expect(body).toHaveProperty('name', expect.any(String))
         done()
       })
       .catch(err => {
@@ -72,9 +59,12 @@ describe('Test endpoint DELETE /products', () => {
       })
   })
 
-  it('Test delete product no access token', (done) => {
+  it('Test create category no access token', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .post('/categories')
+      .send({
+        name: "Sepatu"
+      })
       .then(response => {
         const { body, status } = response
         expect(status).toBe(401)
@@ -86,10 +76,13 @@ describe('Test endpoint DELETE /products', () => {
       })
   })
 
-  it('Test delete product role is not authorized', (done) => {
+  it('Test create category role is not authorized', (done) => {
     request(app)
-      .delete(`/products/${id}`)
+      .post('/categories')
       .set({ access_token: token_customer })
+      .send({
+        name: "Sepatu"
+      })
       .then(response => {
         const { body, status } = response
         expect(status).toBe(401)

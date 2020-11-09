@@ -54,7 +54,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 201
+        expect(status).toBe(201)
         expect(body).toHaveProperty('name', expect.any(String))
         expect(body).toHaveProperty('description', expect.any(String))
         expect(body).toHaveProperty('image_url', expect.any(String))
@@ -101,7 +101,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 401
+        expect(status).toBe(401)
         expect(body).toHaveProperty('msg', 'Authorization failed, please login as admin')
         done()
       })
@@ -123,7 +123,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 401
+        expect(status).toBe(400)
         expect(body).toHaveProperty('msg', 'Name is required')
         done()
       })
@@ -145,7 +145,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 400
+        expect(status).toBe(400)
         expect(body).toHaveProperty('msg', 'Stock must be greater than 0')
         done()
       })
@@ -167,7 +167,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 400
+        expect(status).toBe(400)
         expect(body).toHaveProperty('msg', 'Price must be greater than 0')
         done()
       })
@@ -189,7 +189,7 @@ describe('Test endpoint POST /products', () => {
       })
       .then(response => {
         const { body, status } = response
-        expect(status).toBe = 400
+        expect(status).toBe(400)
         expect(body).toHaveProperty('msg', 'Please fill stock with number')
         done()
       })
