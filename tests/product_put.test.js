@@ -22,37 +22,20 @@ beforeAll(done => {
       password: '1234'
     }).then(response => {
       access_token = response.body.access_token
-      done()
+      return request(app).post('/login').send({
+        email: 'customer@mail.com',
+        password: '1234'
+      })
     })
-    .catch(err => {
-      console.log(err)
-    })
-})
-
-beforeAll(done => {
-  request(app)
-    .post('/login')
-    .send({
-      email: 'customer@mail.com',
-      password: '1234'
-    }).then(response => {
+    .then(response => {
       token_customer = response.body.access_token
-      done()
-    }).catch(err => {
-      console.log(err)
-    })
-})
-
-beforeAll(done => {
-  request(app)
-    .post('/products')
-    .set({ access_token })
-    .send({
-      name: "Sepatu",
-      description: "Sepatu merah celana biru ku tak peduli",
-      image_url: "https://static.shop.adidas.co.id/media/catalog/product/cache/2/thumbnail/1200x/9df78eab33525d08d6e5fb8d27136e95/B/B/BB6166_SL_eCom.jpg",
-      price: 2000000,
-      stock: 10
+      return request(app).post('/products').set({ access_token }).send({
+        name: "Sepatu",
+        description: "Sepatu merah celana biru ku tak peduli",
+        image_url: "https://static.shop.adidas.co.id/media/catalog/product/cache/2/thumbnail/1200x/9df78eab33525d08d6e5fb8d27136e95/B/B/BB6166_SL_eCom.jpg",
+        price: 2000000,
+        stock: 10
+      })
     })
     .then(response => {
       id = response.body.id
@@ -62,6 +45,7 @@ beforeAll(done => {
       console.log(err)
     })
 })
+
 
 describe('Test endpoint PUT /products', () => {
   it('Test update product success', (done) => {

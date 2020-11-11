@@ -15,32 +15,16 @@ beforeAll(done => {
       password: '1234'
     }).then(response => {
       access_token = response.body.access_token
-      done()
-    }).catch(err => {
-      console.log(err)
+      return request(app).post('/login').send({
+        email: 'customer@mail.com',
+        password: '1234'
+      })
     })
-})
-
-beforeAll(done => {
-  request(app)
-    .post('/login')
-    .send({
-      email: 'customer@mail.com',
-      password: '1234'
-    }).then(response => {
+    .then(response => {
       token_customer = response.body.access_token
-      done()
-    }).catch(err => {
-      console.log(err)
-    })
-})
-
-beforeAll(done => {
-  request(app)
-    .post('/categories')
-    .set({ access_token })
-    .send({
-      name: "Sepatu"
+      return request(app).post('/categories').set({ access_token }).send({
+        name: "Sepatu"
+      })
     })
     .then(response => {
       id = response.body.id

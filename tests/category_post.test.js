@@ -20,19 +20,12 @@ beforeAll(done => {
       password: '1234'
     }).then(response => {
       access_token = response.body.access_token
-      done()
-    }).catch(err => {
-      console.log(err)
+      return request(app).post('/login').send({
+        email: 'customer@mail.com',
+        password: '1234'
+      })
     })
-})
-
-beforeAll(done => {
-  request(app)
-    .post('/login')
-    .send({
-      email: 'customer@mail.com',
-      password: '1234'
-    }).then(response => {
+    .then(response => {
       token_customer = response.body.access_token
       done()
     }).catch(err => {
