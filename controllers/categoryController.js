@@ -13,6 +13,20 @@ class CategoryController {
     }
   }
 
+  static async read(req, res, next) {
+    try {
+      const option = {
+        order: [
+          ['createdAt', 'DESC']
+        ]
+      }
+      const categories = await Category.findAll(option)
+      res.status(200).json(categories)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async delete(req, res, next) {
     try {
       const option = {
