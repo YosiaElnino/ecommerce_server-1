@@ -17,7 +17,7 @@ class CategoryController {
     try {
       const option = {
         order: [
-          ['createdAt', 'DESC']
+          ['updatedAt', 'DESC']
         ]
       }
       const categories = await Category.findAll(option)
@@ -39,7 +39,7 @@ class CategoryController {
         msg: "Category has been deleted"
       })
     } catch (error) {
-
+      next(error)
     }
   }
 }

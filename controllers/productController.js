@@ -118,7 +118,13 @@ class ProductController {
   static async findOne(req, res, next) {
     try {
       const id = req.params.id
-      const product = await Product.findByPk(id)
+      const option = {
+        include: [{
+          model: Product_Category,
+          include: [Category]
+        }]
+      }
+      const product = await Product.findByPk(id, option)
       res.status(200).json(product)
     } catch (err) {
       next(error)
@@ -139,6 +145,22 @@ class ProductController {
       res.status(201).json(category)
     } catch (error) {
       console.log(error)
+      next(error)
+    }
+  }
+
+  static async deleteCategory (req, res, next) {
+    try {
+      const option = {
+        where: {
+          [Op.and]: [{ProductId: req.params.id}, {CategoryId: req.body.id}]
+        }
+      }
+      const deleted = await Product_Category.destroy(option)
+      res.status(200).json({
+        msg: "Category has been deleted"
+      })
+    } catch (error) {
       next(error)
     }
   }

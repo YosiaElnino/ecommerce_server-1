@@ -19,8 +19,22 @@ class BannerController {
 
   static async read(req, res, next) {
     try {
-      const banners = await Banner.findAll()
+      const option = {
+        order: [
+          ['updatedAt', 'DESC']
+        ]
+      }
+      const banners = await Banner.findAll(option)
       res.status(200).json(banners)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async findOne(req, res, next) {
+    try {
+      const banner = await Banner.findByPk(req.params.id)
+      res.status(200).json(banner)
     } catch (error) {
       next(error)
     }
@@ -34,6 +48,24 @@ class BannerController {
         image_url: req.body.image_url,
         status: req.body.status,
         type: req.body.type
+      }
+      const option = {
+        where: {
+          id: req.params.id
+        },
+        returning: true
+      }
+      const edited = await Banner.update(payload, option)
+      res.status(200).json(edited[1][0])
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async activate(req, res, next) {
+    try {
+      const payload = {
+        status: req.body.status
       }
       const option = {
         where: {

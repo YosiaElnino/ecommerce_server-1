@@ -8,6 +8,7 @@ router.get('/:id', ProductController.findOne)
 router.put('/:id', ProductController.update)
 router.delete('/:id', ProductController.delete)
 
-router.post('/:id/addCategory', ProductController.addCategory)
+router.post('/:id/category', ProductController.addCategory)
+router.delete('/:id/category', ProductController.deleteCategory)
 
 module.exports = router
