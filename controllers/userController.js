@@ -3,6 +3,20 @@ const { signToken } = require('../helpers/jwt')
 const { comparePassword } = require('../helpers/bcrypt')
 
 class UserController {
+  static async register(req, res, next) {
+    try {
+      const payload = {
+        email: req.body.email,
+        password: req.body.password
+      }
+      const user = await User.create(payload)
+      res.status(201).json(user)
+    } catch (error) {
+      console.log(error)
+      next(error)
+    }
+  }
+
   static async login(req, res, next) {
     try {
       const { email, password } = req.body
@@ -25,6 +39,7 @@ class UserController {
         })
       }
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }

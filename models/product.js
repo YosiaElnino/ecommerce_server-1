@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Product.hasMany(models.Product_Category)
+      Product.hasMany(models.Cart)
     }
   };
   Product.init({

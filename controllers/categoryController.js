@@ -9,6 +9,7 @@ class CategoryController {
       const category = await Category.create(payload)
       res.status(201).json(category)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -23,6 +24,7 @@ class CategoryController {
       const categories = await Category.findAll(option)
       res.status(200).json(categories)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
