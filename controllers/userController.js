@@ -35,7 +35,8 @@ class UserController {
         })
         res.status(200).json({
           access_token,
-          email: user.email
+          email: user.email,
+          role: user.role
         })
       }
     } catch (error) {
