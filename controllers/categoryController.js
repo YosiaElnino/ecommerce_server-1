@@ -4,7 +4,8 @@ class CategoryController {
   static async create(req, res, next) {
     try {
       const payload = {
-        name: req.body.name
+        name: req.body.name,
+        cover_image_url: req.body.cover_image_url
       }
       const category = await Category.create(payload)
       res.status(201).json(category)
